@@ -9,6 +9,12 @@
 {% block content %}
     <a href="{% url 'add_category' %}"><button>Редактировать категории</button></a>
     <a href=""><button>Архив проектов</button></a>
+    {% if not user.is_authenticated %}
+    <a href="{% url 'login' %}">Войти</a>
+    {% else %}
+    <a href="{% url 'logout' %}">Выйти</a>
+    <a href="{% url 'profile' pk=user.pk %}">Профиль</a>
+    {% endif %}
     <h2>Главная страница</h2>
     <h3>Категории:</h3>
     {% for category in categories %}
