@@ -2,12 +2,54 @@
 
 
 {% block title %}
-Главная страница
+    Главная страница
 {% endblock %}
 
 
 {% block content %}
+    <a href="{% url 'add_category' %}"><button>Редактировать категории</button></a>
+    <a href=""><button>Архив проектов</button></a>
     <h2>Главная страница</h2>
-    {{ time_now }}
+    <h3>Категории:</h3>
+    {% for category in categories %}
+        <p><a href="{% url 'category_detail' pk=category.pk %}">{{ category }}</a></p>
+    {% endfor %}
+    {% if not projects %}
+    <h3>Все проекты завершены!!!</h3>
+    {% else %}
+<br><br>
+    <h3>Активные проекты</h3>
+    <table style="width: 55%">
+        <tr>
+            <thead>
+            <th>Категория</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Ментальный проект</th>
+            <th>Физический проект</th>
+            </thead>
+        </tr>
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.category }}</td>
+                <td><a href="{% url 'project_detail' pk=project.id %}">{{ project }}</a></td>
+                <td style="width: 40%">{{ project.description|truncatechars:80 }}</td>
+
+                {% if project.is_mental %}
+                <td style="background: green; width: 7%"></td>
+                {% else %}
+                <td style="width: 7%"></td>
+                {% endif %}
+
+                {% if project.is_physical %}
+                <td style="background: green; width: 7%"></td>
+                {% else %}
+                <td style="width: 7%"></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+    </table>
+    {% endif %}
 {% endblock %}
 

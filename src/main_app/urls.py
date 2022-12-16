@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import home
+from .views import CategoryList  #home
 
 
 urlpatterns = [
-    path('', home, name='home')
+    path('', CategoryList.as_view(), name='home')
 ]

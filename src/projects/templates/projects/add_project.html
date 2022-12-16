@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Редактирование проектов</title>
+{% endblock %}
+
+
+{% block content %}
+<a href="{% url 'home' %}">На главную</a>
+<p><a href="{% url 'category_detail' pk=category.pk %}">Назад</a></p>
+<h3>Редактирование проектов {{ category }}</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+</form>
+
+<br><br>
+<h3>Проекты:</h3>
+<table>
+    {% for proj in projects %}
+    <tr>
+        <td>
+            <p><a href="{% url 'update_project' category_id=proj.category.pk pk=proj.pk %}">{{ proj }}</a></p>
+        </td>
+        <td>
+            <a href="{% url 'delete_project' category_id=proj.category.pk pk=proj.pk %}"><button>Удалить</button></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

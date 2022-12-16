@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Категория {{ category }}
+{% endblock %}
+
+
+{% block content %}
+    <a href="{% url 'home' %}">На Главную</a>
+    <p><a href="{% url 'add_project' category_id=category.id %}"><button>Редактировать проекты</button></a></p>
+    <h1>Категория: {{ category }}</h1>
+    {% if category.description %}
+        <h3>Описание:</h3>
+        <p>{{ category.description }}</p>
+    {% else %}
+        <p>Описание отсутствует</p>
+    {% endif %}
+    <h3>Список проектов:</h3>
+    {% if not projects %}
+        <p>Проекты отсутствуют</p>
+    {% else %}
+        <table>
+<!--            <thead>-->
+            <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Ментальный проект</th>
+            <th>Физический проект</th>
+            <th>Создан</th>
+            <th>Изменён</th>
+            </tr>
+<!--            </thead>-->
+                {% for project in projects %}
+                <tr>
+                {% if project.is_done %}
+                <td style="background: green"><a href="{% url 'project_detail' pk=project.pk %}">{{ project }}</a> -- (Проект завершён)</td>
+                {% else %}
+                <td><a href="{% url 'project_detail' pk=project.pk %}">{{ project }}</a></td>
+                {% endif %}
+                <td style="width: 20%">{{ project.description|truncatechars:120 }}</td>
+                {% if project.is_mental %}
+                <td style="background: green; width: 7%"></td>
+                {% else %}
+                <td style="width: 7%"></td>
+                {% endif %}
+                
+                {% if project.is_physical %}
+                <td style="background: green; width: 7%"></td>
+                {% else %}
+                <td style="width: 7%"></td>
+                {% endif %}
+                <td>{{ project.created }}</td>
+                <td>{{ project.changed }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        
+    {% endif %}
+
+
+{% for tasks, subtasks in data.items %}
+<p>{{ tasks }}</p>
+
+<hr>
+ <table style="border: 1px solid black">
+    <tr>
+        <th style="border: 1px solid black">&nbsp; Задача &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Описание &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Статус &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Сделать к дате &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Сделать ко времени &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Дата создания &nbsp;</th>
+        <th style="border: 1px solid black">&nbsp; Комментарий к задаче &nbsp;</th>
+    </tr>
+     <tr>
+         <td style="border: 1px solid black;width: 350px">
+             <a href=""><h3>{{ tasks.title }}</h3></a>
+             <a href=""><button style="background: lightgreen">Выполнено</button></a>
+         </td>
+            {% if not tasks.description %}
+                <td style="border: 1px solid black; width: 250px;"><p><a href="">Описания нет</a></p></td>
+            {% else %}
+                <td style="border: 1px solid black; width: 250px"><p><a href="">{{ tasks.description }}</a></p></td>
+            {% endif %}
+            {% if not task.is_done %}
+                <td style="border: 1px solid black"><a href="">Не выполнено</a></td>
+            {% endif %}
+            {% if not tasks.to_be_done_by_date %}
+                <td style="border: 1px solid black"><a href="">Без срока</a></td>
+            {% else %}
+                <td style="border: 1px solid black"><a href="">{{ tasks.to_be_done_by_date }}</a></td>
+            {% endif %}
+            {% if not tasks.to_be_done_in_time %}
+                <td style="border: 1px solid black"><a href="">Без времени</a></td>
+            {% else %}
+                <td style="border: 1px solid black"><a href="">{{ tasks.to_be_done_in_time }}</a></td>
+            {% endif %}
+            <td style="border: 1px solid black">{{ tasks.created }}</td>
+            <td style="border: 1px solid black">
+
+            </td>
+     </tr>
+ </table>
+<h4>Подзадачи</h4>
+    <ul>
+        {% for subtask, comment in subtasks %}
+            {% if comment %}
+                <li><a href=""><button style="background: lightgreen">Выполнить</button></a> <a href="">{{ subtask }}</a> || <strong>Комментарий:</strong> {{ comment }}</li>
+            {% else %}
+                <li><a href=""><button style="background: lightgreen">Выполнить</button></a> <a href="">{{ subtask }}</a></li>
+            {% endif %}
+            
+        {% endfor %}
+    </ul>
+<hr>
+<br>
+{% endfor %}
+
+{% endblock %}
+

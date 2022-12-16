@@ -2,11 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>
+        {% block title %}
+            Главная
+        {% endblock %}
+    </title>
 </head>
 <body>
-<h1>Базовая страница</h1>
-{{ datetime.now }}
 {% block content %}
 {% endblock %}
 

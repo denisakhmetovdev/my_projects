@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Главная</title>
+{% endblock %}
+
+
+{% block content %}
+<a href=""><button>Добавить категорию</button></a>
+
+<table>
+{% for key, value in data.items %}
+    <td>
+        <h4>{{ key }}</h4>
+        {% for proj in value %}
+            <p><a href="{% url 'project' proj.id %}">{{ proj }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        {% endfor %}
+    </td>
+{% endfor %}
+</table>
+{% endblock %}
+	

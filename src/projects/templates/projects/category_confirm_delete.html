@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Удаление категории</title>
+{% endblock %}
+
+
+{% block content %}
+<a href="{% url 'home' %}">На главную</a>
+<h2>Удаление категории {{ category.title }}</h2>
+<h4>Описание:</h4>
+<p>{{ category.description }}</p>
+<h3>Внимание!!! Удаление категории приведет к УДАЛЕНИЮ ВСЕХ ПРОЕКТОВ в этой категории!!!</h3>
+<br>
+<h3>Вы уверены?</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Удалить</button>
+</form>
+{% endblock %}

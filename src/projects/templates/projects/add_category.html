@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Редактирование категорий</title>
+{% endblock %}
+
+
+{% block content %}
+<a href="{% url 'home' %}">На главную</a>
+<h3>Редактирование категорий</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+</form>
+
+<h3>Категории:</h3>
+<table>
+    {% for category in categories %}
+    <tr>
+        <td>
+            <p><a href="{% url 'update_category' pk=category.pk %}">{{ category }}</a></p>
+        </td>
+        <td>
+            <a href="{% url 'delete_category' pk=category.pk %}"><button>Удалить</button></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

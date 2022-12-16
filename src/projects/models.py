@@ -20,7 +20,7 @@ class Project(models.Model):
     is_physical = models.BooleanField(verbose_name='Физическая задача')
     is_done = models.BooleanField(default=False, verbose_name='Выполнено')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    changed = models.DateTimeField(blank=True, null=True, verbose_name='Изменён')
+    changed = models.DateTimeField(auto_now=True, verbose_name='Изменён')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
 
     class Meta:
@@ -48,7 +48,10 @@ class ProjectComment(models.Model):
         verbose_name_plural = 'Комментарии к проекту'
 
     def __str__(self):
-        return f'{self.comment[:40]}...'
+        if len(str(self.title)) > 40:
+            return f'{self.comment[:40]}...'
+        else:
+            return self.title
 
 
 class ProjectStatus(models.Model):
@@ -61,7 +64,10 @@ class ProjectStatus(models.Model):
         verbose_name_plural = 'Общие статусы (commit\'ы проекта)'
 
     def __str__(self):
-        return f'{self.title[:25]}... | Проект: {self.project.__str__()}'
+        if len(str(self.title)) > 35:
+            return f'{self.title[:35]}...'
+        else:
+            return self.title
 
 
 class Task(models.Model):
@@ -70,7 +76,7 @@ class Task(models.Model):
     is_done = models.BooleanField(default=False, verbose_name='Выполнено')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     to_be_done_by_date = models.DateField(blank=True, null=True, verbose_name='Сделаю к дате')
-    to_be_done_in_time = models.DateField(blank=True, null=True, verbose_name='Сделаю ко времени')
+    to_be_done_in_time = models.TimeField(blank=True, null=True, verbose_name='Сделаю ко времени')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Задача создана')
 
     class Meta:
@@ -78,7 +84,10 @@ class Task(models.Model):
         verbose_name_plural = 'Задачи'
 
     def __str__(self):
-        return f'{self.title[:30]}... | Проект: {self.project.__str__()}'
+        if len(str(self.title)) > 30:
+            return f'{self.title[:30]}...'
+        else:
+            return self.title
 
 
 class TaskComment(models.Model):

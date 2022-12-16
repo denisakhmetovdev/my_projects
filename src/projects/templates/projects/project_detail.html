@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Проект {{ project }}</title>
+{% endblock %}
+
+
+{% block content %}
+    <a href="{% url 'home' %}">На Главную |</a>
+    <a href="{% url 'category_detail' pk=project.category.pk %}">| Назад</a>
+
+    <h2>Проект "{{ project }}"</h2>
+
+    {% if project.is_done %}
+        <h2 style="color: green">Проект выполнен</h2>
+    {% endif %}
+    
+    <h3>Категория: {{ project.category }}</h3>
+    <h4>Описанние:</h4>
+    <p>{{ project.description }}</p>
+
+    {% if project.is_mental %}
+    <h4>Проект является ментальным</h4>
+    {% endif %}
+
+    {% if project.is_physical %}
+    <h4>Проект является физическим</h4>
+    {% endif %}
+
+    {% if not project.is_mental and not project.is_physical %}
+        <h4>Не отмечено ни "ментальный", ни "физический"</h4>
+    {% endif %}
+
+
+    <table>
+        <tr>
+            <td>
+                {% if status %}
+                    <h3>Последний статус проекта: {{ status }}</h3>
+                {% endif %}
+            </td>
+            <td>
+                <button>История статусов</button>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+                {% if comment %}
+                    <p>Последний комментарий: {{ comment }}</p>
+                {% endif %}
+            </td>
+            <td>
+                <button>История комментариев</button>
+            </td>
+        </tr>
+    </table>
+
+    <p>Создан: {{ project.created }}</p>
+    <h4 style="color: red">Последнее изменение: {{ project.changed }}</h4>
+
+<br><br>
+    <h2>Задачи проекта:</h2>
+    {% for task in tasks %}
+    <p><a href="">{{ task }}</a></p>
+    
+    {% endfor %}
+{% endblock %}
+
